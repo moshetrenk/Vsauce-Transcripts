@@ -15,13 +15,13 @@ public class Fi {
 	
 	Fi() throws IOException{
 		File file = new File("C:\\Users");
-		
-		new File(("C:\\Users\\" + file.list()[5] + "\\Desktop\\Vsauce Transcripts")).mkdir();	
+		String user = file.list()[5];
+		new File(("C:\\Users\\" + user + "\\Desktop\\Vsauce Transcripts")).mkdir();	
 	
 		ArrayList<String> links = getHrefs(getPage());
 		
 		for(String a_href : links){
-			new MakeTSFile(a_href, file.list()[5]);
+			new MakeTSFile(a_href, user);
 		}
 	}
 	
