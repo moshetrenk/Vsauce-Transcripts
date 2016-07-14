@@ -1,0 +1,86 @@
+package s;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ArrayList;
+
+public class Fi {
+	static String user = "";
+	public static void main(String args[]) throws IOException{
+		new Fi();
+	}
+	
+	Fi() throws IOException{
+		File file = new File("C:\\Users");
+		
+		new File(("C:\\Users\\" + file.list()[5] + "\\Desktop\\Vsauce Transcripts")).mkdir();	
+	
+		ArrayList<String> links = getHrefs(getPage());
+		
+		for(String a_href : links){
+			new MakeTSFile(a_href, file.list()[5]);
+		}
+	}
+	
+	public static String getPage(){
+		StringBuffer buffer = new StringBuffer();
+		String theUrl = "https://sites.google.com/site/vsaucetranscripts/home";
+    	try {
+	         URL gotoUrl = new URL(theUrl);
+	         InputStreamReader isr = new InputStreamReader(gotoUrl.openStream());
+	         BufferedReader inStream = new BufferedReader(isr);		            
+	         String inputLine;
+	         
+	         while ((inputLine = inStream.readLine()) != null){
+	        	buffer.append(inputLine);
+	         }
+
+	         return new String(buffer);
+	         
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}	
+    	
+    	return "error";
+    }      
+	
+	static ArrayList<String> getHrefs(String html){
+		int locationInHtml = html.indexOf("<tr><td id=\"sites-chrome-sidebar-left\"");
+		ArrayList<String> ahrefs = new ArrayList<String>(),
+				badAhrefs = new ArrayList<String>();
+		
+		badAhrefs.add("/site/vsaucetranscripts/contact-me");
+		badAhrefs.add("/site/vsaucetranscripts/scripts");
+		badAhrefs.add("/site/vsaucetranscripts/scripts3");
+		
+		String stringToAdd = "";
+		
+		while (locationInHtml + 100 < html.length() && !stringToAdd.contains("/site/vsaucetranscripts/scripts3")){
+			String localString = html.substring(locationInHtml, locationInHtml + 500);
+			
+			if(localString.contains("a href")){
+				int addVal = 500;
+				String cur = html.substring(locationInHtml, locationInHtml + addVal);
+				while (!cur.contains("jotId")){
+					cur = html.substring(locationInHtml, locationInHtml + addVal);
+					addVal += 100;					
+				}
+				
+				int startPt = cur.indexOf("a href") + 8, endPt = cur.indexOf("jotId") - 2;
+				stringToAdd = cur.substring(startPt, endPt);
+				
+				if(!badAhrefs.contains(stringToAdd))
+					ahrefs.add("https://sites.google.com" + stringToAdd);
+			}
+			
+			locationInHtml+= 496;
+		}
+		
+		return ahrefs;	
+	}
+	
+	
+}
