@@ -27,9 +27,9 @@ public class Fi {
 	
 	public static String getPage(){
 		StringBuffer buffer = new StringBuffer();
-		String theUrl = "https://sites.google.com/site/vsaucetranscripts/home";
+		
     	try {
-	         URL gotoUrl = new URL(theUrl);
+	         URL gotoUrl = new URL("https://sites.google.com/site/vsaucetranscripts/home");
 	         InputStreamReader isr = new InputStreamReader(gotoUrl.openStream());
 	         BufferedReader inStream = new BufferedReader(isr);		            
 	         String inputLine;
