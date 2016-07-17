@@ -18,8 +18,12 @@ public class Sauce {
 	
 		ArrayList<String> links = getHrefs(getPage());
 		
-		for(String a_href : links)
+		System.out.println("hrefs found:");
+		
+		for(String a_href : links){
 			new MakeTSFile(a_href, (new File("C:\\Users")).list()[5]);
+			System.out.println(a_href);
+		}
 	}
 	
 	public static String getPage(){
@@ -32,6 +36,7 @@ public class Sauce {
 	         while ((inputLine = inStream.readLine()) != null)
 	        	buffer.append(inputLine);
 
+	         System.out.println("buffer = " + buffer);
 	         return new String(buffer);	         
     	
     	} catch (IOException e) {
@@ -42,36 +47,19 @@ public class Sauce {
     }      
 	
 	static ArrayList<String> getHrefs(String html){
-		int locationInHtml = html.indexOf("<tr><td id=\"sites-chrome-sidebar-left\"");
-		ArrayList<String> ahrefs = new ArrayList<String>(), badAhrefs = new ArrayList<String>();
+		html = html.substring(html.indexOf("Vsauce 1 Scripts"), html.indexOf("Vsauce 2 Scripts"));
+		html = html.substring(html.indexOf("a href"), html.length() - 1);
 		
-		badAhrefs.add("/site/vsaucetranscripts/contact-me");
-		badAhrefs.add("/site/vsaucetranscripts/scripts");
-		badAhrefs.add("/site/vsaucetranscripts/scripts3");
-		
-		String stringToAdd = "";
-		
-		while (locationInHtml + 100 < html.length() && !stringToAdd.contains("/site/vsaucetranscripts/scripts3")){
-			String localString = html.substring(locationInHtml, locationInHtml + 500);
-			
-			if(localString.contains("a href")){
-				int addVal = 500;
-				String cur = html.substring(locationInHtml, locationInHtml + addVal);
+		ArrayList<String> list = new ArrayList<String>();
 				
-				while (!cur.contains("jotId"))
-					cur = html.substring(locationInHtml, locationInHtml + (addVal += 100));
-				
-				int startPt = cur.indexOf("a href") + 8, endPt = cur.indexOf("jotId") - 2;
-				stringToAdd = cur.substring(startPt, endPt);
-				
-				if(!badAhrefs.contains(stringToAdd))
-					ahrefs.add("https://sites.google.com" + stringToAdd);
-			}
-			
-			locationInHtml+= 496;
+		while(html.contains("a href")){
+			list.add("https://sites.google.com" + html.substring(html.indexOf("a href") + 8, html.indexOf("jotId") - 2));
+			html = html.substring(html.indexOf("jotId") + 6, html.length());
 		}
 		
-		return ahrefs;	
+		list.remove(list.size() - 1);
+		
+		return list;
 	}
 	
 	
