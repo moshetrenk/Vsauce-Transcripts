@@ -48,7 +48,6 @@ public class Sauce {
 	
 	static ArrayList<String> getHrefs(String html){
 		html = html.substring(html.indexOf("Vsauce 1 Scripts"), html.indexOf("Vsauce 2 Scripts"));
-		html = html.substring(html.indexOf("a href"), html.length() - 1);
 		
 		ArrayList<String> list = new ArrayList<String>();
 				
