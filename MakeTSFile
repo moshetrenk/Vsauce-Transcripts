@@ -11,11 +11,16 @@ public class MakeTSFile {
 	static PrintWriter outFile;
 	
 	MakeTSFile(String locURL, String userPath)throws IOException{
-		outFile = new PrintWriter("C:\\Users\\" + userPath + "\\Desktop\\Vsauce Transcripts\\" 
-				+ locURL.substring(locURL.indexOf("scripts/") + 16, locURL.length()) + ".txt");
+		outFile = new PrintWriter("C:\\Users\\" 
+						+ userPath 
+						+ "\\Desktop\\Vsauce Transcripts\\" 
+						+ locURL.substring(locURL.indexOf("scripts/") 
+						+ 16, locURL.length()) 
+						+ ".txt");
 		
 		String preMod = transcript(locURL),
-				transcript = preMod.substring(preMod.indexOf("Hey, Vsauce. Michael here."), preMod.indexOf("And as always, thanks for watching.") + (new String("And as always, thanks for watching.").length()));
+			transcript = preMod.substring(preMod.indexOf("Hey, Vsauce. Michael here."), preMod.indexOf("And as always, thanks for watching.") 
+				+ (new String("And as always, thanks for watching.").length()));
 		
 		outFile.println(clean(transcript));
 		outFile.close();
